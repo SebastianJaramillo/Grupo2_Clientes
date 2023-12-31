@@ -13,7 +13,7 @@ import com.banquito.core.banking.clientes.domain.Estado;
 import com.banquito.core.banking.clientes.domain.TipoCliente;
 import com.banquito.core.banking.clientes.domain.TipoIdentificacion;
 import com.banquito.core.banking.clientes.utils.TransaccionException;
-import com.banquito.core.banking.clientes.utils.EncontrarClienteException;
+import com.banquito.core.banking.clientes.utils.EncontrarException;
 import com.banquito.core.banking.clientes.utils.ValidacionException;
 
 @Service
@@ -57,7 +57,7 @@ public class ClientePersonaService {
                                 cliente.setEstado(Estado.ACT);
                                 return this.clienteRepository.save(cliente);
                             } else {
-                                throw new EncontrarClienteException(
+                                throw new EncontrarException(
                                         "Persona con " + cliente.getTipoIdentificacion().name() + ": "
                                                 + cliente.getNumeroIdentificacion() + " ya existe");
                             }
@@ -107,7 +107,7 @@ public class ClientePersonaService {
                     throw new RuntimeException("El tipo de cliente es invalido para persona");
                 }
             } else {
-                throw new EncontrarClienteException("No se pudo encontrar cliente");
+                throw new EncontrarException("No se pudo encontrar cliente");
             }
         } catch (Exception e) {
             throw new TransaccionException(
@@ -126,11 +126,15 @@ public class ClientePersonaService {
                 cliente.setEstado(Estado.INA);
                 return this.clienteRepository.save(cliente);
             } else {
-                throw new EncontrarClienteException("No se pudo encontrar cliente");
+                throw new EncontrarException("No se pudo encontrar cliente");
             }
         } catch (Exception e) {
             throw new TransaccionException("Error en eliminacion de Cliente tipo persona, el error es: " + e);
         }
+    }
+
+    public List<Cliente> findByTipoCliente() {
+        return this.clienteRepository.findByTipoClienteOrderByApellidos(TipoCliente.NAT);
     }
 
     private Boolean validarCedula(String cedula) {
@@ -145,7 +149,7 @@ public class ClientePersonaService {
                 Integer digitoUltimo = Integer.parseInt(cedula.charAt(9) + "");
 
                 for (Integer i = 0; i < coeficientes.length; i++) {
-                    Integer valor = Integer.parseInt(coeficientes[i] + "") * Integer.parseInt(cedula.charAt(i) + "");
+                    Integer valor = coeficientes[i] * Integer.parseInt(cedula.charAt(i) + "");
                     total = valor >= 10 ? total + (valor - 9) : total + valor;
                 }
 

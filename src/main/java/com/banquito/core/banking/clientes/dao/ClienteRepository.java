@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import com.banquito.core.banking.clientes.domain.Cliente;
 import com.banquito.core.banking.clientes.domain.Estado;
+import com.banquito.core.banking.clientes.domain.TipoCliente;
 import com.banquito.core.banking.clientes.domain.TipoIdentificacion;
 
 public interface ClienteRepository extends CrudRepository<Cliente, Long> {
@@ -18,8 +19,10 @@ public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 
     List<Cliente> findByTelefonoOrderByCodigo(String telefono);
 
-    List<Cliente> findByTipoClienteAndApellidosLikeOrderByApellidos(String tipoCliente, String apellidos);
+    List<Cliente> findByTipoClienteOrderByApellidos(TipoCliente tipoCliente);
 
     List<Cliente> findByTipoClienteAndRazonSocialLikeOrderByRazonSocial(String tipoCliente, String razonSocial);
+
+    List<Cliente> findByTipoIdentificacionAndNumeroIdentificacionContaining(TipoIdentificacion tipoIdentificacion, String numeroIdentificacion);
 
 }
