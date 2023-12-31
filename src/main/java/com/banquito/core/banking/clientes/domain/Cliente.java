@@ -1,6 +1,7 @@
 package com.banquito.core.banking.clientes.domain;
 
 import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -62,6 +63,18 @@ public class Cliente {
     @Column(name = "TELEFONO", length = 15)
     private String telefono;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "FECHA_CREACION")
+    private Date fechaCreacion;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "FECHA_ULTIMO_CAMBIO")
+    private Date fechaUltimoCambio;
+
+    @Column(name = "ESTADO", nullable = false, length = 3)
+    @Enumerated(EnumType.STRING)
+    private Estado estado;
+
     @Version
     private Long version;
 
@@ -70,7 +83,7 @@ public class Cliente {
 
     public Cliente(Long codigo) {
         this.codigo = codigo;
-    }    
+    }
 
     public Long getCodigo() {
         return codigo;
@@ -176,6 +189,38 @@ public class Cliente {
         this.telefono = telefono;
     }
 
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Date getFechaUltimoCambio() {
+        return fechaUltimoCambio;
+    }
+
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        this.fechaUltimoCambio = fechaUltimoCambio;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -207,17 +252,7 @@ public class Cliente {
                 + tipoIdentificacion + ", numeroIdentificacion=" + numeroIdentificacion + ", apellidos=" + apellidos
                 + ", nombres=" + nombres + ", fechaNacimiento=" + fechaNacimiento + ", razonSocial=" + razonSocial
                 + ", nombreComercial=" + nombreComercial + ", fechaConstitucion=" + fechaConstitucion + ", direccion="
-                + direccion + ", correoElectronico=" + correoElectronico + ", telefono=" + telefono + "]";
-    }
-
-    public enum TipoCliente {
-        NAT,
-        JUR
-    }
-
-    public enum TipoIdentificacion {
-        CED,
-        PAS,
-        RUC
+                + direccion + ", correoElectronico=" + correoElectronico + ", telefono=" + telefono + ", fechaCreacion="
+                + fechaCreacion + ", fechaUltimoCambio=" + fechaUltimoCambio + ", estado=" + estado + "]";
     }
 }

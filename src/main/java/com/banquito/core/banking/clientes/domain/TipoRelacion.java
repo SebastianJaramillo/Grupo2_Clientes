@@ -19,13 +19,13 @@ public class TipoRelacion {
 
     @Version
     private Long version;
-    
+
     public TipoRelacion() {
     }
 
     public TipoRelacion(String codigo) {
         this.codigo = codigo;
-    }    
+    }
 
     public String getCodigo() {
         return codigo;
@@ -41,6 +41,14 @@ public class TipoRelacion {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     @Override
@@ -71,5 +79,5 @@ public class TipoRelacion {
     @Override
     public String toString() {
         return "TipoRelacion [codigo=" + codigo + ", nombre=" + nombre + "]";
-    }    
+    }
 }

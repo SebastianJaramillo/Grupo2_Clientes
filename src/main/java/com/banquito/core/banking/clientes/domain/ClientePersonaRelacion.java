@@ -113,6 +113,14 @@ public class ClientePersonaRelacion {
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
+    
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     @Override
     public int hashCode() {
@@ -144,10 +152,5 @@ public class ClientePersonaRelacion {
         return "ClientePersonaRelacion [codigo=" + codigo + ", tipoRelacion=" + tipoRelacion + ", clienteEmpresa="
                 + clienteEmpresa + ", clientePersona=" + clientePersona + ", estado=" + estado + ", fechaInicio="
                 + fechaInicio + ", fechaFin=" + fechaFin + "]";
-    }
-
-    public enum Estado {
-        ACT,
-        INA
     }
 }
