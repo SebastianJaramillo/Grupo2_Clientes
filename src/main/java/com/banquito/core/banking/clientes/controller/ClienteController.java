@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import com.banquito.core.banking.clientes.service.ClienteEmpresaService;
 import com.banquito.core.banking.clientes.service.ClientePersonaService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/clientes")
 public class ClienteController {
 
@@ -42,7 +44,7 @@ public class ClienteController {
     }
 
     @GetMapping("/buscar/{tipoIdentificacion}/{numeroIdentificacion}")
-    public ResponseEntity<Optional<Cliente>> findById(@PathVariable TipoIdentificacion tipoIdentificacion, @PathVariable String numeroIdentificacion) {
+    public ResponseEntity<Optional<Cliente>> findByIdentificacion(@PathVariable TipoIdentificacion tipoIdentificacion, @PathVariable String numeroIdentificacion) {
         return ResponseEntity.ok().body(clientePersonaService.findByIdentificacion(tipoIdentificacion, numeroIdentificacion));
     }
 
