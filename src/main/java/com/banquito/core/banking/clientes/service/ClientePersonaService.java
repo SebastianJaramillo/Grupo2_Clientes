@@ -26,7 +26,7 @@ public class ClientePersonaService {
     }
 
     public List<Cliente> listAll() {
-        return this.clienteRepository.findByEstado(Estado.ACT);
+        return this.clienteRepository.findByEstadoOrderByCodigo(Estado.ACT);
     }
 
     public Optional<Cliente> findById(Long id) {

@@ -80,14 +80,19 @@ public class ClienteController {
         return ResponseEntity.ok().body(clienteEmpresaService.actualizarEmpresa(empresa));
     }
 
+    @GetMapping("/empresa/persona/listar/{id}")
+    public ResponseEntity<List<ClientePersonaRelacion>> listPersonasEmpresa(@PathVariable Long id) {
+        return ResponseEntity.ok().body(clienteEmpresaService.findByCodigoEmpresa(id));
+    }
+
     @PostMapping("/empresa/persona/agregar")
     public ResponseEntity<List<ClientePersonaRelacion>> addPersonasEmpresa(@RequestBody List<ClientePersonaRelacion> personas) {
         return ResponseEntity.ok().body(clienteEmpresaService.agregarPersonasRelacion(personas));
     }
 
-    @PutMapping("/empresa/persona/eliminar")
-    public ResponseEntity<ClientePersonaRelacion> deletePersonaEmpresa(@RequestBody ClientePersonaRelacion persona) {
-        return ResponseEntity.ok().body(clienteEmpresaService.eliminarPersonaEmpresa(persona));
+    @PostMapping("/empresa/persona/actualizar")
+    public void updatePersonasRelacion(@RequestBody List<ClientePersonaRelacion> listaPersonas) {
+        this.clienteEmpresaService.actualizarPersonasRelacion(listaPersonas);
     }
 
     @PutMapping("/empresa/eliminar/{id}")

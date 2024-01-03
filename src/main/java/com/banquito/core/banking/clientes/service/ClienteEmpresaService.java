@@ -152,8 +152,15 @@ public class ClienteEmpresaService {
                                     Calendar fechaInicio = Calendar.getInstance();
                                     fechaInicio.setTime(clientePersonaRelacion.getFechaInicio());
 
-                                    if (fechaInicio.before(fechaActual)) {
-                                        clientePersonaRelacion.setEstado(Estado.ACT);
+                                    Calendar fechaFin = null;
+
+                                    if (clientePersonaRelacion.getFechaFin() != null) {
+                                        fechaFin = Calendar.getInstance();
+                                        fechaFin.setTime(clientePersonaRelacion.getFechaFin());
+                                    }
+
+                                    if (fechaInicio.before(fechaActual) && (fechaFin == null
+                                            || (fechaFin.before(fechaActual) && fechaFin.after(fechaInicio)))) {
                                         this.clientePersonaRelacionRepository.save(clientePersonaRelacion);
                                         resultado.add(clientePersonaRelacion);
                                     } else {
@@ -181,34 +188,19 @@ public class ClienteEmpresaService {
                     "Error al agregar clientes persona a una empresa: " + listaPersonas + ", el error es: " + e);
         }
     }
-
-    @Transactional
-    public ClientePersonaRelacion eliminarPersonaEmpresa(ClientePersonaRelacion clientePersonaRelacion) {
+    
+    public void actualizarPersonasRelacion(List<ClientePersonaRelacion> listaPersonas) {
         try {
-            Optional<ClientePersonaRelacion> optionalPersona = clientePersonaRelacionRepository
-                    .findByCodigoPersonaAndCodigoEmpresaAndEstado(clientePersonaRelacion.getCodigoPersona(),
-                            clientePersonaRelacion.getCodigoEmpresa(), Estado.ACT);
-            if (optionalPersona.isPresent()) {
-                Calendar fechaActual = Calendar.getInstance();
+            if (listaPersonas == null || listaPersonas.isEmpty()) {
+                throw new RuntimeException("La lista de personas asociadas a la empresa está vacía");
+            }
 
-                Calendar fechaInicio = Calendar.getInstance();
-                fechaInicio.setTime(clientePersonaRelacion.getFechaInicio());
-
-                Calendar fechaFin = Calendar.getInstance();
-                fechaFin.setTime(clientePersonaRelacion.getFechaFin());
-
-                if (fechaFin.after(fechaInicio) && fechaFin.before(fechaActual)) {
-                    clientePersonaRelacion.setEstado(Estado.INA);
-                    return this.clientePersonaRelacionRepository.save(clientePersonaRelacion);
-                } else {
-                    throw new ValidacionException("la fecha de fin");
-                }
-            } else {
-                throw new EncontrarException("No se pudo encontrar persona asociada a la empresa");
+            for (ClientePersonaRelacion persona : listaPersonas) {
+                this.clientePersonaRelacionRepository.delete(persona);
             }
         } catch (Exception e) {
             throw new TransaccionException(
-                    "Error en eliminacion de Cliente persona asociado a la empresa, el error es: " + e);
+                    "Error en actualizacion de Cliente persona asociado a la empresa, el error es: " + e);
         }
     }
 
@@ -282,5 +274,9 @@ public class ClienteEmpresaService {
             return false;
         }
         return false;
+    }
+
+    public List<ClientePersonaRelacion> findByCodigoEmpresa(Long codigoEmpresa) {
+        return this.clientePersonaRelacionRepository.findByCodigoEmpresa(codigoEmpresa);
     }
 }

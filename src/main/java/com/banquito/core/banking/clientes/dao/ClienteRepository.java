@@ -11,7 +11,7 @@ import com.banquito.core.banking.clientes.domain.TipoIdentificacion;
 
 public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 
-    List<Cliente> findByEstado(Estado estado);;
+    List<Cliente> findByEstadoOrderByCodigo(Estado estado);;
     
     Optional<Cliente> findByTipoIdentificacionAndNumeroIdentificacion(TipoIdentificacion tipoIdentificacion, String numeroIdentificacion);
 
